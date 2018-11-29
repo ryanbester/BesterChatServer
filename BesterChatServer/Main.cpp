@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine,
 		return 0;
 	}
 
-	hWnd = CreateWindowEx(0, szWndClassName, szAppName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
+	hWnd = CreateWindowEx(0, szWndClassName, szAppName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 600, 400, NULL, NULL, hInstance, NULL);
 
 	if (hWnd == NULL)
 	{
@@ -87,6 +87,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	case WM_CREATE:
 	{
+		HMENU hMenu;
+
+		hMenu = LoadMenu(NULL, MAKEINTRESOURCE(IDM_MAIN_MENU));
+
+		SetMenu(hWnd, hMenu);
+
 		NONCLIENTMETRICS ncm;
 		ZeroMemory(&ncm, sizeof(ncm));
 		ncm.cbSize = sizeof(NONCLIENTMETRICS);
@@ -98,7 +104,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		switch(LOWORD(wParam))
 		{
-			
+		case IDM_FILE_EXIT:
+		{
+			PostQuitMessage(0);
+			break;
+		}
 		}
 	}
 	case WM_CTLCOLORSTATIC:
