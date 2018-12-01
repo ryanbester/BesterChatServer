@@ -1,3 +1,5 @@
+// Copyright (C) 2018 Ryan Bester
+
 #define WIN32_LEAN_AND_MEAN
 
 #ifndef _WINDOWS_
@@ -6,16 +8,42 @@
 
 #include <stdio.h>
 #include <CommCtrl.h>
+#include <memory>
 
 #include "main.h"
 #include "resource.h"
+#include "statusBar.h"
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+VOID GetClientArea(HWND hWnd, RECT &rcArea);
+
+std::unique_ptr<StatusBar> statusBar;
 
 bool CALLBACK SetFont(HWND child, LPARAM font)
 {
 	SendMessage(child, WM_SETFONT, font, true);
 	return true;
+}
+
+VOID GetClientArea(HWND hWnd, RECT &rcArea)
+{
+	RECT rcClient;
+	RECT rcStatus;
+	int iStatusHeight;
+
+	GetClientRect(hWnd, &rcClient);
+
+	if (statusBar)
+	{
+		SendMessage(statusBar->hStatus, WM_SIZE, 0, 0);
+
+		GetWindowRect(statusBar->hStatus, &rcStatus);
+		iStatusHeight = rcStatus.bottom - rcStatus.top;
+
+		rcClient.bottom = rcClient.bottom - iStatusHeight;
+	}
+
+	rcArea = rcClient;
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
@@ -93,6 +121,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		SetMenu(hWnd, hMenu);
 
+		statusBar = std::make_unique<StatusBar>(hWnd);
+
+		statusBar->CreateStatusBar();
+
 		NONCLIENTMETRICS ncm;
 		ZeroMemory(&ncm, sizeof(ncm));
 		ncm.cbSize = sizeof(NONCLIENTMETRICS);
@@ -110,6 +142,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		}
+	}
+	case WM_GETMINMAXINFO:
+	{
+		LPMINMAXINFO lpMMI = (LPMINMAXINFO)lParam;
+		lpMMI->ptMinTrackSize.x = 500;
+		lpMMI->ptMinTrackSize.y = 300;
+		break;
+	}
+	case WM_SIZE:
+	{
+		RECT rcClient;
+
+		GetClientArea(hWnd, rcClient);
+
+		break;
 	}
 	case WM_CTLCOLORSTATIC:
 	{

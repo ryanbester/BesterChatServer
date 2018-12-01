@@ -1,3 +1,5 @@
+// Copyright (C) 2018 Ryan Bester
+
 #pragma once
 
 #ifndef _MAIN_

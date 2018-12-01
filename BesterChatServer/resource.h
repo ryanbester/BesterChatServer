@@ -1,3 +1,5 @@
+// Copyright (C) 2018 Ryan Bester
+
 #pragma once
 
 #ifndef _RESOURCE_
@@ -31,11 +33,15 @@ extern const TCHAR szAppName[];
 #define IDM_GROUP_INFORMATION 131
 #define IDM_GROUP_VIEW_USERS 132
 #define IDM_GROUP_VIEW_MESSAGES 133
-#define IDM_GROUP_VIEW_FILES 134
-#define IDM_GROUP_VIEW_IMAGES 135
+#define IDM_GROUP_VIEW_IMAGES 134
+#define IDM_GROUP_VIEW_VIDEOS 135
+#define IDM_GROUP_VIEW_FILES 136
+
 #define IDM_GROUP_SETTINGS 136
 
 #define IDM_HELP_HELP 141
 #define IDM_HELP_ABOUT 142
+
+#define IDC_MAIN_STATUS 201
 
 #endif
