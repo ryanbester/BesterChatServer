@@ -13,6 +13,7 @@
 #include "main.h"
 #include "resource.h"
 #include "statusBar.h"
+#include "aboutDlg.h"
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 VOID GetClientArea(HWND hWnd, RECT &rcArea);
@@ -141,7 +142,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			PostQuitMessage(0);
 			break;
 		}
+		case IDM_HELP_ABOUT:
+		{
+			AboutDialog aboutDialog = AboutDialog();
+			int dialog = aboutDialog.ShowDialog(hWnd);
+			break;
 		}
+		}
+		break;
 	}
 	case WM_GETMINMAXINFO:
 	{

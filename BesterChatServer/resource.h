@@ -42,6 +42,8 @@ extern const TCHAR szAppName[];
 #define IDM_HELP_HELP 141
 #define IDM_HELP_ABOUT 142
 
+#define IDD_HELP_ABOUT 2001
+
 #define IDC_MAIN_STATUS 201
 
 #endif
